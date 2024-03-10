@@ -1,0 +1,32 @@
+# 导入必要的库
+import pyperclip
+
+# 读取剪贴板内容
+clipboard_content = pyperclip.paste()
+
+# 要搜索的书名
+book_title = "Java编程的逻辑"
+
+# 分割笔记内容
+notes = clipboard_content.split("==========\n")
+
+# 存储匹配的笔记
+matched_notes = []
+
+# 遍历每个笔记，检查是否与指定书名相关
+for note in notes:
+    if book_title in note:
+        # 提取并处理笔记内容，移除位置信息
+        note_lines = note.split('\n')
+        note_content = [line for line in note_lines if not line.startswith("- 您在位置")]
+        matched_note = "\n".join(note_content[1:])  # 移除包含书名的第一行
+        matched_notes.append(matched_note.strip())
+
+# 格式化输出结果
+output = "\n\n".join(["- " + note for note in matched_notes])
+
+# 将结果复制回剪贴板
+pyperclip.copy(output)
+
+# 打印结果，也可以选择不打印
+print(output)
